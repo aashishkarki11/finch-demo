@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sync HR</title>
+</head>
+
+<body>
+    <button id="authorizeButton">Sync HR</button>
+
+    <script>
+        document.getElementById('authorizeButton').addEventListener('click', async function () {
+            try {
+
+                const authURL = new URL('https://connect.tryfinch.com/authorize')
+
+                authURL.searchParams.append('client_id', 'b03d5c32-8802-474a-a90c-6ca406910144')
+                authURL.searchParams.append('products', 'directory individual employment company')
+                authURL.searchParams.append('redirect_uri', 'http://localhost:3001/auth')
+                authURL.searchParams.append('sandbox', 'provider')
+
+                window.location.href = authURL.href;
+            } catch (error) {
+                console.error('Error authorizing:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
