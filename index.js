@@ -26,14 +26,36 @@ async function main() {
         // console.log("employee data :", employeeData);
         // console.log("first users data:", individualInDirectory);
 
-        //company
-        const companyDetails = await finch.hris.company.retrieve();
+        const employeeIds = ['b02cbf0a-c7c2-4795-804a-6561059fbd26', 'e1ff91dd-3d9c-47dd-9c4b-207209327752', '7003c945-6724-4c1c-867d-33e10c167551'];
+        const request = {
+            requests: employeeIds.map(id => ({
+                individual_id: id
+            }))
+        };
 
-        console.log("company details :", companyDetails);
-        console.log("Company ID:", companyDetails.id);
-        console.log("Legal Name:", companyDetails.legal_name);
-        console.log("Primary Email:", companyDetails.primary_email);
-        console.log("Primary Phone Number:", companyDetails.primary_phone_number);
+        //selected employee id ko data
+        const individualsPage = await finch.hris.individuals.retrieveMany(request);
+        const individuals = individualsPage.responses;
+        console.log("requested record for individual: ", individuals)
+
+        //their email and type 
+        individuals.forEach(individual => {
+            const { body: { emails } } = individual;
+            console.log("Emails for individual:", emails);
+            emails.forEach(email => {
+                const { data, type } = email;
+                console.log(`Email: ${data}, Type: ${type}`);
+            });
+        });
+
+        //company
+        // const companyDetails = await finch.hris.company.retrieve();
+
+        // console.log("company details :", companyDetails);
+        // console.log("Company ID:", companyDetails.id);
+        // console.log("Legal Name:", companyDetails.legal_name);
+        // console.log("Primary Email:", companyDetails.primary_email);
+        // console.log("Primary Phone Number:", companyDetails.primary_phone_number);
 
         //employment
         // const employmentData = await finch.employments.retrieveMany({ requests: individualIds.map(id => ({ individual_id: id })) });
